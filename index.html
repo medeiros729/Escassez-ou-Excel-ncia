@@ -1,0 +1,72 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Escassez ou Excelência?</title>
+<style>
+:root{--bg:#f5efe3;--card:#fffaf2;--green:#718b78;--green2:#dce8df;--orange:#df8b45;--dark:#252827;--muted:#6d716e;--border:#d9d1c4}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--dark);font-family:Arial,sans-serif}.wrap{max-width:900px;margin:auto;padding:28px 18px 50px}.card{background:var(--card);border:2px solid var(--border);border-radius:24px;padding:30px;box-shadow:0 12px 35px #0000000c}.center{text-align:center}h1{font-size:48px;line-height:1;margin:0 0 12px}p{line-height:1.55}.sub{font-size:20px;font-weight:700;color:var(--green)}.muted{color:var(--muted)}.btn{border:0;border-radius:14px;padding:15px 22px;background:var(--green);color:#fff;font-weight:800;font-size:16px;cursor:pointer}.orange{background:var(--orange)}.hidden{display:none!important}.top{display:flex;justify-content:space-between;gap:12px;margin-bottom:15px}.badge{background:var(--green2);border-radius:999px;padding:8px 12px;font-weight:800;font-size:13px}.progress{height:10px;background:#ded8cd;border-radius:99px;overflow:hidden;margin-bottom:25px}.progress div{height:100%;background:var(--orange);width:0}.qnum{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--orange);font-weight:900}.question{font-size:27px;font-weight:800;line-height:1.25;margin:10px 0 22px}.options{display:grid;gap:13px}.option{display:block;width:100%;text-align:left;padding:18px;border:2px solid var(--border);border-radius:16px;background:#fff;cursor:pointer;font-size:16px;line-height:1.4}.option.selected{border-color:var(--green);background:var(--green2)}.letter{display:inline-flex;width:32px;height:32px;border-radius:50%;align-items:center;justify-content:center;background:#eee8dc;font-weight:900;margin-right:10px}.selected .letter{background:var(--green);color:white}.next{display:flex;justify-content:flex-end;margin-top:22px}.resultIcon{font-size:60px}.resultTitle{font-size:38px;font-weight:900;margin:8px 0}.score{font-size:21px;font-weight:800;color:var(--green)}.tip{background:var(--green2);border-radius:18px;padding:18px;margin-top:20px}.bars{display:grid;gap:12px;margin:20px 0}.barrow{display:grid;grid-template-columns:180px 1fr 40px;gap:10px;align-items:center}.track{height:13px;background:#e3ddd2;border-radius:99px;overflow:hidden}.fill{height:100%;background:var(--orange)}.quote{font-size:19px;font-weight:700;text-align:center;padding:25px 5px}@media(max-width:650px){h1{font-size:38px}.card{padding:22px}.question{font-size:23px}.barrow{grid-template-columns:1fr 45px}.barrow .track{grid-column:1/-1;grid-row:2}}
+</style></head><body><div class="wrap">
+<section id="intro" class="card center"><div style="font-size:62px">🧠</div>
+<h1>ESCASSEZ<br>OU EXCELÊNCIA?</h1>
+<p class="sub">Qual mentalidade está governando suas decisões?</p>
+<p>Escolha a alternativa que mais se aproxima da sua reação habitual.</p>
+<p class="muted"><b>Importante:</b> é uma ferramenta de reflexão, não um diagnóstico psicológico ou financeiro.</p>
+<button id="start" class="btn orange">Começar o quiz →</button></section>
+
+<section id="quiz" class="hidden"><div class="top"><span id="counter" class="badge"></span><span id="signal" class="badge"></span></div>
+<div class="progress"><div id="prog"></div></div><div class="card">
+<div id="qnum" class="qnum"></div><div id="qtext" class="question"></div><div id="opts" class="options"></div>
+<div class="next"><button id="next" class="btn orange" disabled>Continuar →</button></div></div></section>
+<section id="result" class="card hidden"></section></div>
+<script>const QUESTIONS=[["Modo urgente", "Quando aparece um problema financeiro inesperado, você costuma:", ["Resolver o que está na frente e deixar o restante para depois.", "Resolver a urgência, mas separar alguns minutos para reorganizar as próximas prioridades.", "Parar, listar o que precisa ser feito e definir a ordem antes de agir."], [2, 1, 0]], ["Modo urgente", "Quando começa uma semana cheia de compromissos, você:", ["Vai resolvendo conforme as coisas aparecem.", "Organiza as tarefas mais importantes e deixa alguma margem para imprevistos.", "Faz uma lista rápida, mas normalmente abandona o planejamento quando surge uma urgência."], [2, 0, 1]], ["Alívio imediato", "Depois de uma semana muito estressante, você pensa:", ["Eu mereço alguma coisa agora, mesmo que não estivesse planejada.", "Quero descansar, então procuro uma forma de aliviar o estresse sem criar outro problema depois.", "Às vezes gasto para aliviar o estresse e depois percebo que poderia ter pensado melhor."], [2, 0, 1]], ["Alívio imediato", "Você recebe um dinheiro extra que não esperava. Sua primeira reação tende a ser:", ["Finalmente posso comprar aquela coisa que estava querendo.", "Vou separar uma parte para uma prioridade e decidir o restante com calma.", "Quero aproveitar um pouco, mas também penso em alguma necessidade futura."], [2, 0, 1]], ["Imediatismo", "Você tem uma conta vencendo hoje e outra despesa importante na próxima semana. Você:", ["Resolve a de hoje e deixa a próxima para quando chegar.", "Considera as duas e decide como preservar dinheiro para a próxima semana.", "Resolve a de hoje e tenta lembrar depois de olhar a próxima."], [2, 0, 1]], ["Imediatismo", "Quando pensa em organizar suas finanças para os próximos meses, você:", ["Pensa que primeiro precisa resolver os problemas de hoje.", "Entende que o presente é importante, mas reserva algum espaço para planejar o futuro.", "Até gostaria de planejar, mas acaba voltando para as necessidades imediatas."], [2, 0, 1]], ["Dívida como saída recorrente", "Uma despesa inesperada apareceu e você não tem dinheiro separado. Você:", ["Procura imediatamente uma parcela, empréstimo ou crédito para resolver.", "Avalia primeiro todas as alternativas e o impacto de assumir uma nova dívida.", "Considera o crédito, mas tenta descobrir primeiro se existe outra saída."], [2, 0, 1]], ["Dívida como saída recorrente", "Quando uma parcela termina, você tende a:", ["Usar o espaço que abriu para assumir outra compra.", "Aproveitar a folga para fortalecer o orçamento ou uma reserva.", "Às vezes usa para uma compra e às vezes tenta guardar."], [2, 0, 1]], ["Risco sem avaliar perdas", "Alguém apresenta uma oportunidade de ganhar dinheiro rapidamente. Você:", ["Aproveita logo, porque oportunidades assim podem desaparecer.", "Procura entender quanto pode ganhar, quanto pode perder e quais são os riscos.", "Fica interessado, mas tenta conferir algumas informações antes."], [2, 0, 1]], ["Risco sem avaliar perdas", "Quando uma decisão financeira parece muito arriscada, você pensa:", ["Não tenho muito a perder; talvez seja minha chance.", "Antes de decidir, preciso saber qual é a pior consequência possível.", "Se a oportunidade parecer boa, considero o risco, mas posso agir rápido."], [2, 0, 1]], ["Longo prazo", "Quando imagina sua situação financeira daqui a um ano, você:", ["Prefiro não pensar muito nisso; quando chegar, você resolve.", "Não sabe exatamente como estará, mas pensa no que pode fazer hoje para chegar melhor lá.", "Pensa no futuro, mas sente dificuldade para transformar isso em um plano."], [2, 0, 1]], ["Longo prazo", "Você percebe que este mês está apertado. Sua tendência é:", ["Tentar chegar ao fim do mês e pensar no próximo depois.", "Reorganizar as prioridades agora para reduzir a pressão dos próximos meses.", "Fazer alguns ajustes, mas voltar ao padrão normal quando a pressão diminuir."], [2, 0, 1]], ["Cansaço e impotência", "Quando você se sente cansado de tentar organizar sua vida financeira, pensa:", ["Não importa o que eu faça, nada muda.", "Preciso começar por uma pequena coisa que consigo organizar e avançar a partir dela.", "Sei que preciso mudar, mas não sei por onde começar."], [2, 0, 1]], ["Cansaço e impotência", "Quando um plano financeiro não funciona como esperado, você:", ["Abandona o plano porque parece que nunca dá certo.", "Analisa o que aconteceu, ajusta o plano e tenta novamente.", "Fica desanimado, mas depois tenta fazer algum ajuste."], [2, 0, 1]]];
+
+"use strict";
+const qs=QUESTIONS;
+let cur=0,total=0,scores={};
+qs.forEach(q=>scores[q[0]]=0);
+const $=id=>document.getElementById(id);
+
+function render(){
+ const q=qs[cur];
+ $("counter").textContent="Pergunta "+(cur+1)+" de "+qs.length;
+ $("signal").textContent="Sinal "+(Math.floor(cur/2)+1)+" de 7";
+ $("qnum").textContent="Situação "+(cur+1);
+ $("qtext").textContent=q[1];
+ $("prog").style.width=(cur/qs.length*100)+"%";
+ $("next").disabled=true;
+ const box=$("opts"); box.innerHTML="";
+ q[2].forEach((text,i)=>{
+   const b=document.createElement("button");
+   b.type="button"; b.className="option";
+   b.innerHTML='<span class="letter">'+String.fromCharCode(65+i)+'</span>'+text;
+   b.onclick=()=>{
+     document.querySelectorAll(".option").forEach(x=>x.classList.remove("selected"));
+     b.classList.add("selected"); b.dataset.i=i; $("next").disabled=false;
+   };
+   box.appendChild(b);
+ });
+}
+
+function finish(){
+ $("quiz").classList.add("hidden"); $("result").classList.remove("hidden");
+ const max=qs.length*2, pct=100-Math.round(total/max*100);
+ let icon,title,desc;
+ if(total<=9){icon="🟢";title="Tendência de Excelência";desc="Suas respostas mostram maior tendência a planejar, avaliar consequências, criar margem e agir com visão de longo prazo."}
+ else if(total<=18){icon="🟡";title="Mentalidade em Alerta";desc="Suas respostas misturam planejamento e reação imediata. Sob pressão, alguns comportamentos de escassez podem aparecer."}
+ else{icon="🔴";title="Sinais de Mentalidade de Escassez";desc="Suas respostas mostram maior frequência de escolhas ligadas à urgência, imediatismo, pouca margem ou reação sob pressão."}
+ const entries=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+ let bars="";
+ entries.forEach(e=>{const p=Math.round(e[1]/4*100);bars+='<div class="barrow"><b>'+e[0]+'</b><div class="track"><div class="fill" style="width:'+p+'%"></div></div><b>'+e[1]+'/4</b></div>'});
+ $("result").innerHTML='<div class="center"><div class="resultIcon">'+icon+'</div><div class="resultTitle">'+title+'</div><div class="score">Índice de respostas de excelência: '+pct+'%</div><p>'+desc+'</p></div><div class="tip"><b>Principal ponto de atenção:</b><br>'+entries[0][0]+'</div><h3>Seus 7 sinais</h3><div class="bars">'+bars+'</div><div class="tip"><b>Próximo passo:</b><br>Escolha o sinal que mais apareceu e trabalhe uma mudança prática: criar folga, planejar antes de reagir e colocar os problemas no papel.</div><div class="quote">"Tudo quanto fizerdes, fazei-o de todo o coração, como ao Senhor..."<br><span class="muted">Colossenses 3:23</span></div><div class="center"><button id="restart" class="btn orange">Fazer novamente</button></div>';
+ $("restart").onclick=restart;
+}
+function restart(){
+ cur=0; total=0; Object.keys(scores).forEach(k=>scores[k]=0);
+ $("result").classList.add("hidden"); $("quiz").classList.remove("hidden"); render();
+}
+$("start").onclick=()=>{$("intro").classList.add("hidden");$("quiz").classList.remove("hidden");render()};
+$("next").onclick=()=>{
+ const sel=document.querySelector(".option.selected"); if(!sel)return;
+ const q=qs[cur],i=Number(sel.dataset.i),pts=q[3][i];
+ total+=pts; scores[q[0]]+=pts; cur++;
+ if(cur>=qs.length)finish(); else render();
+};
+</script></body></html>
